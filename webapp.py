@@ -5,6 +5,9 @@ from flask import render_template, flash
 import pprint
 import os
 
+class GithubOAuthVarsNotDefined(Exception):
+        pass
+
 if os.getenv('GITHUB_CLIENT_ID') == None or \
         os.getenv('GITHUB_CLIENT_SECRET') == None or \
         os.getenv('APP_SECRET_KEY') == None:
@@ -44,7 +47,7 @@ github = oauth.remote_app(
 
 @app.context_processor
 def inject_logged_in():
-    print "Checking isLoggedIn"
+    print ("Checking isLoggedIn")
     return dict(logged_in=('github_token' in session))
 
 @app.route('/')
@@ -59,7 +62,7 @@ def home():
 
 @app.route('/login')
 def login():
-    return github.authorize(callback=url_for('authorized', _external=True))
+    return github.authorize(callback=url_for('authorized', _external=True, _scheme='https'))
 
 @app.route('/logout')
 def logout():
