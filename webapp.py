@@ -99,7 +99,7 @@ def authorized():
     # Get user info (org, name, if user is in our org)
     try:
         org_name = os.getenv('GITHUB_ORG')
-        g = Github(resp['access_token'])
+        g = github(resp['access_token'])
         org = g.get_organization(org_name)
         named_user = g.get_user(github_userid)
         isMember = org.has_in_members(named_user)
