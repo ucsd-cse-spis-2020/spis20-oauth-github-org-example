@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
 from flask import render_template, flash
+from github import Github
 
 import pprint
 import os
@@ -99,7 +100,7 @@ def authorized():
     # Get user info (org, name, if user is in our org)
     try:
         org_name = os.getenv('GITHUB_ORG')
-        g = github(resp['access_token'])
+        g = Github(resp['access_token'])
         org = g.get_organization(org_name)
         named_user = g.get_user(github_userid)
         isMember = org.has_in_members(named_user)
